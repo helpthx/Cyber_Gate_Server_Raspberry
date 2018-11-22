@@ -123,7 +123,7 @@
   $Matricula = $_POST['Matricula'];
   class MyDB extends SQLite3 {
       function __construct() {
-         $this->open('/opt/lampp/htdocs/dashboard/Banco_de_dados.db');
+         $this->open('/home/pi/Banco_de_dados.db');
       }
    }
 
