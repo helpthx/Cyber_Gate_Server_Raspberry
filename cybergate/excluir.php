@@ -147,6 +147,16 @@ EOF;
       echo $db->lastErrorMsg();
    } else {
       echo $db->changes(), " Cadastro deletado com sucesso...<br />\n";
+      
+      $cria = fopen("/home/pi/Arquivos/Logs/excluidos.txt", "a+");
+     
+      $today = date("Y-m-d H:i:s"); 
+      $frase_matricula = "\n-------------------\n" .$today . "\nMatricula: " . $Matricula . "\n";
+      $frase_excluido = "Usuario foi removido do sistema.\n-------------------"; 
+      $dados .= $frase_matricula .  $frase_excluido;
+   
+      $escreve = fwrite($cria,$dados);
+      fclose($cria);
    }
    echo "<br />\nOperação feita com sucesso...<br />\n";
    $db->close();
