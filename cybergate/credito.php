@@ -153,6 +153,18 @@ EOF;
       echo $db->lastErrorMsg();
    } else {
       echo $db->changes(), " Cadastro atualizado com sucesso...<br />\n";
+   //Sistema de escrita por log
+   $cria = fopen("/home/pi/Arquivos/Logs/creditos.txt", "a+");
+      
+   $today = date("Y-m-d H:i:s"); 
+   $frase_matricula = "\n-------------------\n" .$today . "\nMatricula: " . $Matricula . "\n";
+   $frase_dinheiro = "Foi adicionado: R$" . $Dinheiro . " \n-------------------"; 
+   $dados .= $frase_matricula .  $frase_dinheiro;
+   
+   $escreve = fwrite($cria,$dados);
+   // Fechando o arquivo
+   fclose($cria);
+  
    }
 
  $sql =<<<EOF
