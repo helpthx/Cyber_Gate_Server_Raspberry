@@ -28,7 +28,7 @@
 <!--===============================================================================================-->
 </head>
 <body>
-<form method = "post" action="excluir.php">
+<form method = "post" action="refeicao.php">
    <div class="oz-body-wrap">
       <!-- Start Header Area -->
       <header class="default-header">
@@ -57,29 +57,29 @@
             <center>
             <img src="images/logo.png" alt="some text" width=500 height=500>
             </center>
-               Painel para iniciar nova refeição
+               Painel para vizualiar os registros
             </span>
          
-            <label class="label-input100" for="Dinheiro">Escolha a refeição que será iniciada *</label>
+            <label class="label-input100" for="Dinheiro">ESCOLHA O REGISTRO QUE SERÁ MOSTRADO *</label>
             
             <div class= "wrap-input100">
                <center>
                <div class="container-contact100-form-btn">
-                        <button class="contact100-form-btn" >
-                           <input id="Cafe_da_manha" type="button" name="Cafe_da_manha">
-                        Café da Manhã
+                        <button class="contact100-form-btn">
+                           <input id="creditos" type="button" name="creditos">
+                        <a href="refeicao.php?creditos=1" style=" color: white" > Creditos</a>
                      </button>
                   </div>
                <div class="container-contact100-form-btn">
                         <button class="contact100-form-btn">   
-                           <input id="almoco" type="button" name="almoco">
-                         Almoço
+                           <input id="refeicoes" type="button" name="refeicoes">
+                         <a href="refeicao.php?refeicoes=1" style=" color: white" >Refeicoes</a>
                      </button>
                   </div>
                <div class="container-contact100-form-btn">
                         <button class="contact100-form-btn">
-                           <input id="jantar" type="button" name="jantar">
-                        Jantar
+                           <input id="excluidos" type="button" name="excluidos">
+                        <a href="refeicao.php?excluidos=1" style=" color: white"> Excluidos</a>
                      </button>
                   </div>
                 </center>
@@ -121,7 +121,6 @@
      window.dataLayer = window.dataLayer || [];
      function gtag(){dataLayer.push(arguments);}
      gtag('js', new Date());
-
      gtag('config', 'UA-23581568-13');
    </script>
 </body>
@@ -129,35 +128,43 @@
 
  
 <?php
+ 
 
-  $Matricula = $_POST['Matricula'];
-  class MyDB extends SQLite3 {
-      function __construct() {
-         $this->open('/opt/lampp/htdocs/dashboard/Banco_de_dados.db');
-      }
-   }
+if (isset($_GET['creditos']) == 1){
+	
+	$arquivo = fopen ('/home/pi/Arquivos/Logs/creditos.txt', 'r');
+	// Lê o conteúdo do arquivo 
+	while(!feof($arquivo))
+	{
+		$linha = fgets($arquivo, 1024);
+			echo $linha.'<br />';
+	}
+	fclose($arquivo);
+	
+}
 
-   
-   
-   $db = new MyDB();
-   if(!$db) {
-      echo $db->lastErrorMsg();
-   } else {
-      echo "Banco aberto com sucesso...<br />\n";
-   }
+elseif (isset($_GET['refeicoes']) == 1) {
+	$arquivo = fopen ('/home/pi/Arquivos/Logs/log_refeicoes.txt', 'r');
+	// Lê o conteúdo do arquivo 
+	while(!feof($arquivo))
+	{
+		$linha = fgets($arquivo, 1024);
+			echo $linha.'<br />';
+	}
 
-   $sql =<<<EOF
-      UPDATE CADASTROS set NOME = "DESCADASTRADO", MATRICULA = 00000000 , RU = 00.00,  ACESSOS = 0 WHERE  MATRICULA = '$Matricula';
-      
+	
+}
 
-EOF;
+elseif (isset($_GET['excluidos']) == 1) {
+	$arquivo = fopen ('/home/pi/Arquivos/Logs/excluidos.txt', 'r');
+	// Lê o conteúdo do arquivo 
+	while(!feof($arquivo))
+	{
+		$linha = fgets($arquivo, 1024);
+			echo $linha.'<br />';
+	}
+	fclose($arquivo);
+}
 
-   $ret = $db->exec($sql);
-   if(!$ret) {
-      echo $db->lastErrorMsg();
-   } else {
-      echo $db->changes(), " Cadastro deletado com sucesso...<br />\n";
-   }
-   echo "<br />\nOperação feita com sucesso...<br />\n";
-   $db->close();
+
 ?>

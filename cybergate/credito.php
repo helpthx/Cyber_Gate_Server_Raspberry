@@ -153,9 +153,10 @@ EOF;
       echo $db->lastErrorMsg();
    } else {
       echo $db->changes(), " Cadastro atualizado com sucesso...<br />\n";
-   //Sistema de escrita por log
+
    $cria = fopen("/home/pi/Arquivos/Logs/creditos.txt", "a+");
-      
+   
+   
    $today = date("Y-m-d H:i:s"); 
    $frase_matricula = "\n-------------------\n" .$today . "\nMatricula: " . $Matricula . "\n";
    $frase_dinheiro = "Foi adicionado: R$" . $Dinheiro . " \n-------------------"; 
@@ -165,12 +166,13 @@ EOF;
    // Fechando o arquivo
    fclose($cria);
   
+
    }
 
  $sql =<<<EOF
       SELECT * from CADASTROS WHERE MATRICULA = '$Matricula';
 EOF;
-
+	
    $ret = $db->query($sql);
    while($row = $ret->fetchArray(SQLITE3_ASSOC) ) {
       echo ("<br />\nID = ". $row['ID'] . "<br />\n");
@@ -181,4 +183,5 @@ EOF;
    }
    echo "<br />\nOperação feita com sucesso...<br />\n";
    $db->close();
+   
 ?>
